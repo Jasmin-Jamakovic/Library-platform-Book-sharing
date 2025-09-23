@@ -1,5 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, column
-from sqlalchemy.orm import relationship,sessionmaker
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, column,Float
+from sqlalchemy.orm import relationship, sessionmaker, foreign
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
 
@@ -27,6 +27,43 @@ class User(Base):
     id=Column(Integer,primary_key=True,index=True)
     name=Column(String,index=True)
     email=Column(String,unique=True,index=True)
+
+class Transaction(Base):
+    __tablename__="Transactions"
+    id=Column(Integer,primary_key=True,index=True)
+    user_id=(Integer,ForeignKey("users.id"))
+    book_id=(Integer,ForeignKey("book.id"))
+    transaction_type=Column(String)
+    amount=Column(float)
+    date=Column(DateTime,default=datetime.datetime.utcnow())
+
+    user=relationship("User",back_populates="transactions")
+    book=relationship("book",back_populates="transactions")
+
+
+class Rental(Base):
+    __tablename__="rentals"
+    id=Column(Integer,primary_key=True,index=True)
+    user_id=Column(Integer,ForeignKey("users.id"))
+    book_id=Column(Integer,ForeignKey("books.id"))
+    start_date=Column(DateTime,default=datetime.datetime.utcnow())
+    end_date=Column(datetime)
+    status=Column(String,default="rented")
+
+    user=relationship("User",back_populates="rentals")
+    book=relationship("book",back_populates="rentals")
+
+
+class Payment(Base):
+    __tablename__="payments"
+    id=Column(Integer,primary_key=True,index=True)
+    user_id=Column(Integer,ForeignKey("users.id"))
+    amount=Column(Float)
+    payment_date=Column(DateTime,default=datetime.datetime.utcnow())
+    payment_status=Column(String)
+
+    user=relationship("User",back_populates="payments")
+
 
 
 Base.metadata.create_all(bind=engine)
