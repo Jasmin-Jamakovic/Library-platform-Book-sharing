@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker,Session
 from models import DATABASE_URL, SessionLocal
 
 engine=create_engine(DATABASE_URL)

@@ -34,7 +34,7 @@ class Transaction(Base):
     user_id=(Integer,ForeignKey("users.id"))
     book_id=(Integer,ForeignKey("book.id"))
     transaction_type=Column(String)
-    amount=Column(float)
+    amount=Column(Float)
     date=Column(DateTime,default=datetime.datetime.utcnow())
 
     user=relationship("User",back_populates="transactions")
@@ -47,7 +47,7 @@ class Rental(Base):
     user_id=Column(Integer,ForeignKey("users.id"))
     book_id=Column(Integer,ForeignKey("books.id"))
     start_date=Column(DateTime,default=datetime.datetime.utcnow())
-    end_date=Column(datetime)
+    end_date=Column(DateTime,default=datetime.datetime.utcnow())
     status=Column(String,default="rented")
 
     user=relationship("User",back_populates="rentals")
